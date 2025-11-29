@@ -1,4 +1,4 @@
-/* --- ESTILO STARLINK FINAL (Con Animaciones) --- */
+/* --- ESTILO STARLINK FINAL --- */
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
@@ -312,4 +312,5 @@ a:hover {
 #enlace-recuperar {
     text-align: center;
     margin-top: 20px;
+
 }
