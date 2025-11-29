@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <div class="contenedor">
+        <h2>Iniciar Sesión</h2>
+        
+        <form id="form-login">
+            <div class="grupo-input">
+                <label>Usuario (Correo):</label>
+                <input type="email" id="login-usuario" required>
+            </div>
+
+            <div class="grupo-input">
+                <label>Contraseña:</label>
+                <input type="password" id="login-pass" required>
+            </div>
+
+            <div class="opcion-ver">
+                <input type="checkbox" onclick="mostrarOcultarPass('login-pass')"> Mostrar contraseña
+            </div>
+
+            <button type="submit">Ingresar</button>
+        </form>
+
+        <p id="mensaje-sistema" class="mensaje"></p>
+
+        <div id="enlace-recuperar" style="display: none; margin-top: 15px;">
+            <p style="color: red;">Cuenta bloqueada.</p>
+            <a href="html/recuperar.html">Recuperar contraseña aquí</a>
+        </div>
+
+        <br>
+        <p>¿No tienes cuenta? <a href="html/registro.html">Regístrate aquí</a></p>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

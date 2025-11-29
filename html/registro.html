@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+    <div class="contenedor">
+        <h2>Crear Cuenta</h2>
+        
+        <form id="form-registro">
+            <div class="grupo-input">
+                <label>Nombre Completo:</label>
+                <input type="text" id="reg-nombre" placeholder="Ej: Juan Pérez" required>
+            </div>
+
+            <div class="grupo-input">
+                <label>Usuario (Correo):</label>
+                <input type="email" id="reg-correo" placeholder="correo@ejemplo.com" required>
+            </div>
+
+            <div class="grupo-input">
+                <label>Celular:</label>
+                <input type="tel" id="reg-celular" placeholder="Solo números" required>
+            </div>
+
+            <div class="grupo-input">
+                <label>Contraseña:</label>
+                <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres, Mayús, Minús, #, símbolo" required>
+            </div>
+
+            <div class="opcion-ver">
+                <input type="checkbox" onclick="mostrarOcultarPass('reg-pass')"> Mostrar contraseña
+            </div>
+
+            <button type="submit">Registrarme</button>
+        </form>
+
+        <p id="mensaje-sistema" class="mensaje"></p>
+        
+        <br>
+        <a href="../index.html">Volver al Inicio de Sesión</a>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>
