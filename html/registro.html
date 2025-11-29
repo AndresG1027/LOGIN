@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+    <div class="contenedor">
+        <h2>Crear Cuenta</h2>
+        
+        <form id="form-registro">
+            <div class="grupo-input">
+                <label>Nombre Completo:</label>
+                <input type="text" id="reg-nombre" placeholder="Ej: Juan Pérez" required>
+            </div>
+
+            <div class="grupo-input">
+                <label>Usuario (Correo):</label>
+                <input type="email" id="reg-correo" placeholder="correo@ejemplo.com" required>
+            </div>
+
+            <div class="grupo-input">
+                <label>Celular:</label>
+                <div class="fila-celular">
+                    
+                    <div class="selector-pais-wrapper" id="wrapper-paises">
+                        <div class="pais-seleccionado" onclick="toggleListaPaises()">
+                            <div class="info-pais-actual">
+                                <div id="flag-actual-container">
+                                    <img src="https://flagcdn.com/w40/bo.png" class="flag-img" alt="bo">
+                                </div>
+                                <span id="code-actual">+591</span>
+                            </div>
+                            <span class="flechita">▼</span>
+                        </div>
+
+                        <div class="lista-dropdown" id="lista-paises">
+                            <input type="text" class="buscador-pais" placeholder="Search country..." onkeyup="filtrarPaises()" id="input-buscador">
+                            <ul id="lista-items-pais">
+                                </ul>
+                        </div>
+                        
+                        <input type="hidden" id="valor-pais-oculto" value="+591">
+                    </div>
+
+                    <input type="tel" id="reg-celular" placeholder="Solo números" required>
+                </div>
+            </div>
+
+            <div class="grupo-input">
+                <label>Contraseña:</label>
+                <div class="input-con-icono">
+                    <input type="password" id="reg-pass" placeholder="Mayús, Minús, #, Símbolo" required>
+                    <span class="icono-ojo" onclick="mostrarOcultarPass('reg-pass')" title="Mostrar/Ocultar">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+            <button type="submit">Registrarme</button>
+        </form>
+
+        <p id="mensaje-sistema" class="mensaje"></p>
+        
+        <br>
+        <a href="../index.html">Volver al Inicio de Sesión</a>
+    </div>
+
+    <script src="../js/main.js"></script>
+</body>
+</html>
