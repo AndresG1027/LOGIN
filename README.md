@@ -4,7 +4,7 @@ Este proyecto consiste en un sistema completo de registro, inicio de sesión y r
 
 ## 🔗 Enlaces del Proyecto (Obligatorio)
 
-* **Repositorio en GitHub:** [PEGAR AQUÍ TU ENLACE DEL REPO]
+* **Repositorio en GitHub:** https://github.com/AndresG1027/LOGIN.git
 * **Proyecto publicado (GitHub Pages):** [PEGAR AQUÍ TU ENLACE DE GITHUB PAGES]
 
 ---
@@ -61,3 +61,4 @@ El módulo de recuperación (`recuperar.html`) sigue este flujo lógico:
 * `css/`: Hoja de estilos con diseño responsivo y tema profesional.
 * `js/`: Lógica principal del sistema.
 * `index.html`: Pantalla principal de inicio de sesión.
+
