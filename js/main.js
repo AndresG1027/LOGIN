@@ -1,11 +1,11 @@
 /* ARCHIVO PRINCIPAL DE JAVASCRIPT
-    Aquí manejo el registro, el login y la recuperación de cuenta.
-    Uso localStorage para guardar los datos como si fuera una base de datos simple.
-    También controlo el selector de países con imágenes reales.
+    Aquí manejo toda la lógica del sistema: Registro, Login y Recuperación.
+    Uso localStorage para guardar los datos en el navegador del usuario.
+    También controlo el selector de países y las validaciones especiales.
 */
 
 // --- 1. Datos para el selector de países ---
-// Lista de objetos con código ISO para cargar las banderas desde internet.
+// Tengo esta lista de objetos para poder cargar las banderas desde internet usando su código ISO.
 var listaPaises = [
     { codigo: "+93", nombre: "Afghanistan", iso: "af" },
     { codigo: "+54", nombre: "Argentina", iso: "ar" },
@@ -30,24 +30,21 @@ var listaPaises = [
 // Valida que el nombre solo tenga letras y espacios (incluye tildes).
 var regexNombre = /^[A-Za-zÁÉÍÓÚÑáéíóúñ ]+$/;
 
-// Valida formato de correo estándar (texto @ texto . extension).
-// Nota: Solo uso una barra invertida para el punto, así JS lo entiende bien.
+// Valida formato de correo estándar. Uso una sola barra invertida para que JS no se queje.
 var regexCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-// Valida celular: solo números, entre 7 y 12 dígitos.
-var regexCelularNum = /^[0-9]{7,12}$/;
+// Regla GENERAL para celulares del mundo (entre 7 y 12 números).
+var regexCelularGeneral = /^[0-9]{7,12}$/;
 
-// Valida contraseña fuerte:
-// - Al menos una minúscula (?=.*[a-z])
-// - Al menos una mayúscula (?=.*[A-Z])
-// - Al menos un número (?=.*\d)
-// - Al menos un símbolo (?=.*[\W_])
-// - Mínimo 6 caracteres total
+// Regla ESPECIAL solo para Bolivia: Exactamente 8 dígitos, ni más ni menos.
+var regexCelularBolivia = /^[0-9]{8}$/;
+
+// Valida contraseña fuerte: Mayúscula, minúscula, número, símbolo y mínimo 6 caracteres.
 var regexPass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{6,}$/;
 
 
-// --- 3. Iconos SVG para el ojo (Abierto y Cerrado) ---
-// Los guardo en variables para mantener el HTML limpio y ordenado.
+// --- 3. Iconos SVG para el ojo ---
+// Los guardo en variables para no ensuciar el HTML con código repetido.
 const svgOjoAbierto = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>';
 const svgOjoCerrado = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>';
 
@@ -57,27 +54,26 @@ const svgOjoCerrado = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 2
 var ulLista = document.getElementById("lista-items-pais");
 var listaDropdown = document.getElementById("lista-paises");
 
-// Función simple para obtener la URL de la bandera según el código ISO
+// Construyo la URL de la bandera usando el código ISO (ej: 'bo' -> bandera de Bolivia)
 function obtenerUrlBandera(iso) {
     return "https://flagcdn.com/w40/" + iso + ".png";
 }
 
-// Esta función carga la lista de países en el dropdown
+// Esta función llena la lista desplegable con los países y sus banderas
 function cargarPaises(paises) {
-    if (!ulLista) return; // Si no estamos en registro, no hacemos nada
-    ulLista.innerHTML = ""; // Limpiamos la lista antes de llenarla
+    if (!ulLista) return; // Si no estamos en registro, no hago nada.
+    ulLista.innerHTML = ""; 
     
     for (var i = 0; i < paises.length; i++) {
         var p = paises[i];
         var li = document.createElement("li");
         li.className = "item-pais";
         
-        // Truco: usamos una funcion dentro para que recuerde qué país es al hacer click
+        // Uso un cierre (closure) para recordar qué país se clickeó
         li.onclick = (function(pais) {
             return function() { seleccionarPais(pais); };
         })(p);
 
-        // Dibujamos cada item usando la etiqueta IMG para que se vea la bandera real
         li.innerHTML = `
             <img src="${obtenerUrlBandera(p.iso)}" class="flag-img" alt="${p.iso}">
             <span class="nombre">${p.nombre}</span>
@@ -87,57 +83,55 @@ function cargarPaises(paises) {
     }
 }
 
-// Abre y cierra la lista de países
+// Muestra u oculta el menú desplegable
 function toggleListaPaises() {
     if (listaDropdown.style.display === "block") {
         listaDropdown.style.display = "none";
     } else {
         listaDropdown.style.display = "block";
-        document.getElementById("input-buscador").focus(); // Ponemos el cursor listo para buscar
+        document.getElementById("input-buscador").focus(); // Pongo el foco para buscar rápido
     }
 }
 
-// Filtra la lista mientras escribes
+// Filtro la lista de países según lo que escriba el usuario
 function filtrarPaises() {
     var texto = document.getElementById("input-buscador").value.toLowerCase();
-    
-    // Filtramos el array original
     var filtrados = listaPaises.filter(function(pais) {
         return pais.nombre.toLowerCase().indexOf(texto) > -1;
     });
     cargarPaises(filtrados);
 }
 
-// Cuando eliges un país, actualizamos la vista y guardamos el dato
+// Actualizo la vista cuando el usuario elige un país
 function seleccionarPais(pais) {
-    // Actualizamos la imagen principal
     var imgHtml = '<img src="' + obtenerUrlBandera(pais.iso) + '" class="flag-img">';
     document.getElementById("flag-actual-container").innerHTML = imgHtml;
     
     document.getElementById("code-actual").textContent = pais.codigo;
+    // Guardo el código en un input oculto para usarlo luego
     document.getElementById("valor-pais-oculto").value = pais.codigo;
+    
     listaDropdown.style.display = "none";
 }
 
-// Si haces click fuera de la lista, la cerramos para que no estorbe
+// Cierro la lista si el usuario hace click afuera
 window.onclick = function(event) {
     if (!event.target.matches('.pais-seleccionado') && !event.target.matches('.pais-seleccionado *') && !event.target.matches('.buscador-pais')) {
         if (listaDropdown) listaDropdown.style.display = "none";
     }
 }
 
-// Inicializamos la lista si estamos en la página correcta
+// Inicializo la lista al cargar
 if (ulLista) {
     cargarPaises(listaPaises);
 }
 
-// Función del OJO: Muestra u oculta la contraseña y cambia el ícono
+// Alterno entre ver contraseña y ocultarla, cambiando también el ícono
 function mostrarOcultarPass(idInput) {
     var input = document.getElementById(idInput);
     var wrapper = input.parentElement;
     var iconoSpan = wrapper.querySelector('.icono-ojo');
 
-    // Si es password lo cambio a texto, si es texto lo regreso a password
     if (input.type === "password") {
         input.type = "text";
         iconoSpan.innerHTML = svgOjoAbierto;
@@ -147,71 +141,79 @@ function mostrarOcultarPass(idInput) {
     }
 }
 
-// Función pequeña para mostrar mensajes en pantalla (Error o Éxito)
+// Función auxiliar para mostrar alertas de error o éxito
 function mostrarMensaje(texto, tipo) {
     var parrafo = document.getElementById("mensaje-sistema");
     parrafo.textContent = texto;
-    // Quitamos clases viejas y ponemos la nueva (error o exito)
     parrafo.className = "mensaje " + tipo;
 }
 
 
-// --- 5. Lógica del REGISTRO (Se ejecuta solo si estamos en registro.html) ---
+// --- 5. Lógica del REGISTRO (Se ejecuta solo en registro.html) ---
 var formRegistro = document.getElementById("form-registro");
 
 if (formRegistro) {
     formRegistro.addEventListener("submit", function(event) {
-        event.preventDefault(); // Evito que se recargue la página
+        event.preventDefault(); // Evito que la página se recargue
 
-        // Obtengo los valores de los inputs
+        // Recojo los datos del formulario
         var nombre = document.getElementById("reg-nombre").value;
         var correo = document.getElementById("reg-correo").value;
         var password = document.getElementById("reg-pass").value;
         var codigoPais = document.getElementById("valor-pais-oculto").value;
         var numeroTelf = document.getElementById("reg-celular").value;
+        
+        // Construyo el número completo (Ej: +591 12345678)
         var celularCompleto = codigoPais + " " + numeroTelf;
 
-        // Validamos Nombre
+        // Validamos el Nombre
         if (!regexNombre.test(nombre)) {
             mostrarMensaje("El nombre no es válido (solo letras).", "error");
             return;
         }
 
-        // Validamos Correo
+        // Validamos el Correo
         if (!regexCorreo.test(correo)) {
             mostrarMensaje("El correo no tiene un formato válido.", "error");
             return;
         }
 
-        // Validamos Celular (Solo la parte numérica)
-        if (!regexCelularNum.test(numeroTelf)) {
-            mostrarMensaje("El celular debe tener entre 7 y 12 números.", "error");
-            return;
+        // --- VALIDACIÓN ESPECIAL DE CELULAR ---
+        // Si el país es Bolivia (+591), soy estricto: deben ser 8 dígitos exactos.
+        if (codigoPais === "+591") {
+            if (!regexCelularBolivia.test(numeroTelf)) {
+                mostrarMensaje("Para Bolivia, el celular debe tener exactamente 8 dígitos.", "error");
+                return;
+            }
+        } else {
+            if (!regexCelularGeneral.test(numeroTelf)) {
+                mostrarMensaje("El celular debe tener entre 7 y 12 dígitos.", "error");
+                return;
+            }
         }
 
-        // Validamos Contraseña Segura
+        // Validamos la fuerza de la Contraseña
         if (!regexPass.test(password)) {
-            mostrarMensaje("La contraseña es débil. Debe tener mayúscula, minúscula, número y símbolo.", "error");
+            mostrarMensaje("La contraseña es débil. Use mayúsculas, números y símbolos.", "error");
             return;
         }
 
-        // Si todo está bien, guardamos en el navegador (localStorage)
-        // Guardamos un objeto con los datos del usuario
+        // Si todo está correcto, creo el objeto del usuario
         var nuevoUsuario = {
             nombre: nombre,
             correo: correo,
             celular: celularCompleto,
             password: password,
-            intentos: 0,      // Contador de fallos
-            bloqueado: false  // Estado de la cuenta
+            intentos: 0,      // Empieza con 0 errores
+            bloqueado: false  // Empieza desbloqueado
         };
 
-        // Convertimos el objeto a texto para guardarlo
+        // Guardo el usuario en el navegador (localStorage)
         localStorage.setItem("usuarioRegistrado", JSON.stringify(nuevoUsuario));
 
         mostrarMensaje("¡Usuario registrado con éxito! Redirigiendo...", "exito");
         
-        // Esperamos 2 segundos y lo mandamos al login
+        // Espero un poco para que lea el mensaje y lo mando al login
         setTimeout(function() {
             window.location.href = "../index.html";
         }, 2000);
@@ -229,56 +231,56 @@ if (formLogin) {
         var correoIngresado = document.getElementById("login-usuario").value;
         var passIngresado = document.getElementById("login-pass").value;
 
-        // Recuperamos al usuario guardado
+        // Intento recuperar los datos del usuario guardado
         var usuarioGuardado = localStorage.getItem("usuarioRegistrado");
         
-        // Primero pregunto: ¿Existe algún usuario guardado?
+        // Primera verificación: ¿Existe el usuario?
         if (!usuarioGuardado) {
             mostrarMensaje("Esta cuenta no existe. Por favor, regístrese primero.", "error");
             return;
         }
 
-        // Si existe, convierto el texto a objeto para poder usarlo
         var usuarioObj = JSON.parse(usuarioGuardado);
 
-        // Aquí está la clave: Verifico si el correo coincide ANTES de mirar la contraseña.
-        // Si el correo está mal, no debo sumar intentos fallidos.
+        // Segunda verificación (IMPORTANTE):
+        // Reviso si el correo coincide ANTES de verificar la contraseña.
+        // Así evito bloquear la cuenta si alguien escribe mal el correo.
         if (usuarioObj.correo !== correoIngresado) {
             mostrarMensaje("El correo ingresado no pertenece a ninguna cuenta registrada.", "error");
             return;
         }
 
-        // Si el correo es correcto, reviso si la cuenta ya está bloqueada por errores previos
+        // Si el correo es correcto, verifico si la cuenta está bloqueada
         if (usuarioObj.bloqueado === true) {
             mostrarMensaje("Cuenta bloqueada por intentos fallidos.", "error");
             document.getElementById("enlace-recuperar").style.display = "block";
             return;
         }
 
-        // Ahora sí, si el correo está bien y no está bloqueado, valido la contraseña
+        // Si todo está bien, verifico la contraseña
         if (usuarioObj.password === passIngresado) {
-            // LOGIN EXITOSO
+            // ¡Login Exitoso!
             mostrarMensaje("Bienvenido al sistema, " + usuarioObj.nombre, "exito");
             
-            // Reiniciamos los intentos a 0 porque entró correctamente
+            // Reinicio los intentos fallidos a 0
             usuarioObj.intentos = 0;
             localStorage.setItem("usuarioRegistrado", JSON.stringify(usuarioObj));
 
         } else {
-            // LOGIN FALLIDO (Contraseña incorrecta)
-            usuarioObj.intentos = usuarioObj.intentos + 1; // Aquí sí sumamos el error
+            // Contraseña Incorrecta -> Sumo un intento fallido
+            usuarioObj.intentos = usuarioObj.intentos + 1;
 
             if (usuarioObj.intentos >= 3) {
-                // Si llega a 3 errores, bloqueamos la cuenta
+                // Si llegó a 3 errores, bloqueo la cuenta
                 usuarioObj.bloqueado = true;
                 mostrarMensaje("Cuenta bloqueada por intentos fallidos.", "error");
                 document.getElementById("enlace-recuperar").style.display = "block";
             } else {
-                // Si aun no llega a 3, solo avisamos
+                // Si no, solo le aviso cuántos intentos lleva
                 mostrarMensaje("Contraseña incorrecta. Intento " + usuarioObj.intentos + " de 3.", "error");
             }
 
-            // Guardamos el contador actualizado en localStorage
+            // Guardo el estado actualizado (intentos o bloqueo)
             localStorage.setItem("usuarioRegistrado", JSON.stringify(usuarioObj));
         }
     });
@@ -295,7 +297,7 @@ if (formRecuperar) {
         var correoConfirmar = document.getElementById("rec-correo").value;
         var nuevaPass = document.getElementById("rec-pass").value;
 
-        // Traemos datos guardados
+        // Recupero datos
         var usuarioGuardado = localStorage.getItem("usuarioRegistrado");
 
         if (!usuarioGuardado) {
@@ -305,29 +307,29 @@ if (formRecuperar) {
 
         var usuarioObj = JSON.parse(usuarioGuardado);
 
-        // Verificamos que sea el mismo correo
+        // Verifico que el correo sea el correcto
         if (usuarioObj.correo !== correoConfirmar) {
             mostrarMensaje("El correo no coincide con el registrado.", "error");
             return;
         }
 
-        // Validamos que la nueva contraseña sea segura
+        // Valido que la nueva contraseña sea segura
         if (!regexPass.test(nuevaPass)) {
             mostrarMensaje("La nueva contraseña no cumple los requisitos de seguridad.", "error");
             return;
         }
 
-        // ACTUALIZAMOS LOS DATOS
-        usuarioObj.password = nuevaPass; // Cambiamos la clave por la nueva
-        usuarioObj.bloqueado = false;    // Desbloqueamos la cuenta
-        usuarioObj.intentos = 0;         // Reiniciamos los intentos a cero
+        // ACTUALIZO LOS DATOS DEL USUARIO
+        usuarioObj.password = nuevaPass; // Guardo la nueva clave
+        usuarioObj.bloqueado = false;    // Desbloqueo la cuenta
+        usuarioObj.intentos = 0;         // Reseteo el contador de errores
 
-        // Guardamos los cambios en el navegador
+        // Guardo los cambios en localStorage
         localStorage.setItem("usuarioRegistrado", JSON.stringify(usuarioObj));
 
         mostrarMensaje("Contraseña actualizada. Ahora puede iniciar sesión.", "exito");
 
-        // Redirigimos al login después de un ratito
+        // Lo mando al login automáticamente
         setTimeout(function() {
             window.location.href = "../index.html";
         }, 2000);
