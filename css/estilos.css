@@ -1,316 +1,171 @@
-/* --- ESTILO STARLINK FINAL --- */
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-
+/* Estilos Generales - Tema Oscuro Simple */
 body {
-    font-family: 'Roboto', 'Segoe UI', sans-serif;
-    /* Negro absoluto */
-    background-color: #000000;
+    font-family: Arial, sans-serif; /* Fuente básica */
+    background-color: #000000; /* Negro puro */
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh; /* Altura completa */
     margin: 0;
-    color: #ffffff;
-}
-
-/* Animación de entrada de la tarjeta principal */
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.98); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-/* NUEVA ANIMACIÓN: Despliegue del menú de países */
-@keyframes dropdownReveal {
-    from { 
-        opacity: 0; 
-        transform: translateY(-15px); /* Empieza arriba */
-    }
-    to { 
-        opacity: 1; 
-        transform: translateY(0); /* Cae a su lugar */
-    }
+    color: white;
 }
 
 .contenedor {
-    background: #000000;
-    padding: 50px 40px;
-    border: 1px solid #333333; /* Borde sutil característico */
-    border-radius: 0px; /* Bordes rectos */
-    width: 400px;
+    background-color: #000000;
+    padding: 40px;
+    border: 1px solid #333; /* Borde gris suave */
+    width: 380px;
     text-align: center;
-    position: relative;
-    animation: fadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 h2 {
-    color: #ffffff;
     margin-top: 0;
-    margin-bottom: 40px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 2rem;
+    margin-bottom: 30px;
+    letter-spacing: 2px; /* Separación de letras */
 }
 
+/* Inputs y Etiquetas */
 .grupo-input {
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     text-align: left;
 }
 
 label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #cccccc;
-    font-size: 0.75em;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    margin-bottom: 5px;
+    color: #ccc;
+    font-size: 12px;
 }
 
-/* Inputs técnicos */
-input[type="text"], 
-input[type="email"], 
-input[type="password"], 
-input[type="tel"] {
+input {
     width: 100%;
-    padding: 14px 16px;
-    box-sizing: border-box;
+    padding: 12px;
+    box-sizing: border-box; /* Para que el padding no rompa el ancho */
     background-color: #000000;
-    border: 1px solid #444444;
-    border-radius: 4px;
-    font-size: 16px;
-    color: #ffffff;
-    transition: all 0.2s ease;
+    border: 1px solid #444;
+    color: white;
+    font-size: 14px;
 }
 
 input:focus {
-    border-color: #ffffff;
+    border-color: white; /* Borde blanco al escribir */
     outline: none;
-    box-shadow: 0 0 0 1px #ffffff; /* Foco blanco nítido */
 }
 
-.grupo-input:focus-within label {
-    color: #ffffff;
+/* Botón Blanco */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: white;
+    color: black;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 20px;
 }
 
-/* --- SELECTOR DE PAÍS --- */
+button:hover {
+    background-color: #ddd; /* Un poco gris al pasar el mouse */
+}
+
+/* Selector de País */
 .fila-celular {
-    display: flex;
+    display: flex; /* Pone los elementos lado a lado */
     gap: 10px;
     position: relative;
 }
 
 .selector-pais-wrapper {
+    width: 140px;
     position: relative;
-    width: 150px;
 }
 
 .pais-seleccionado {
-    background-color: #000000;
-    border: 1px solid #444444;
-    border-radius: 4px;
-    padding: 0 12px;
-    cursor: pointer;
+    border: 1px solid #444;
+    height: 42px; /* Altura manual para igualar al input */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 48px;
-    box-sizing: border-box;
-    font-size: 15px;
-    color: #ffffff;
-    transition: border-color 0.2s;
-}
-
-.pais-seleccionado:hover {
-    border-color: #aaaaaa;
+    padding: 0 10px;
+    cursor: pointer;
+    font-size: 13px;
 }
 
 .info-pais-actual {
     display: flex;
     align-items: center;
-    gap: 10px;
 }
 
 .flag-img {
-    width: 22px;
-    height: 15px;
-    object-fit: cover;
-    border-radius: 2px;
+    width: 20px;
+    height: 14px;
+    margin-right: 8px;
     border: 1px solid #333;
 }
 
-.flechita {
-    font-size: 10px;
-    color: #ffffff;
-}
-
-/* LISTA DESPLEGABLE CON ANIMACIÓN */
+/* Lista desplegable */
 .lista-dropdown {
-    display: none; /* JS lo cambia a block */
+    display: none; /* Oculto por defecto */
     position: absolute;
-    top: 105%;
+    top: 45px;
     left: 0;
-    width: 300px;
-    background: #000000;
-    border: 1px solid #444444;
-    border-radius: 4px;
-    z-index: 100;
-    overflow: hidden;
-    
-    /* AQUI ESTÁ LA ANIMACIÓN QUE PEDISTE */
-    transform-origin: top center;
-    animation: dropdownReveal 0.2s ease-out forwards;
+    width: 200px;
+    background-color: #000000;
+    border: 1px solid #444;
+    z-index: 10;
 }
 
-.buscador-pais {
-    width: 100%;
-    border: none;
-    border-bottom: 1px solid #333;
-    padding: 14px;
-    outline: none;
-    font-size: 14px;
-    background: #0a0a0a;
-    color: #ffffff;
-    text-transform: uppercase;
-}
-
-#lista-items-pais {
-    list-style: none;
-    margin: 0;
+ul {
+    list-style: none; /* Quita los puntos de la lista */
     padding: 0;
-    max-height: 220px;
-    overflow-y: auto;
-}
-
-#lista-items-pais::-webkit-scrollbar {
-    width: 4px;
-}
-#lista-items-pais::-webkit-scrollbar-track {
-    background: #000000;
-}
-#lista-items-pais::-webkit-scrollbar-thumb {
-    background-color: #444;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto; /* Barra de desplazamiento si es muy largo */
 }
 
 .item-pais {
-    padding: 10px 15px;
+    padding: 10px;
+    border-bottom: 1px solid #222;
     cursor: pointer;
     display: flex;
     align-items: center;
-    font-size: 14px;
-    border-bottom: 1px solid #111;
-    color: #cccccc;
-    transition: background 0.2s;
 }
 
 .item-pais:hover {
-    background-color: #1a1a1a;
-    color: #ffffff;
+    background-color: #222;
 }
 
-.item-pais .nombre {
-    flex-grow: 1;
-    margin-left: 10px;
-}
-
-.item-pais .codigo {
-    color: #666;
-    font-size: 0.9em;
-}
-
-/* --- OJO --- */
+/* Ojo de contraseña */
 .input-con-icono {
     position: relative;
-    width: 100%;
-}
-
-.input-con-icono input {
-    padding-right: 45px;
 }
 
 .icono-ojo {
     position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
+    right: 10px;
+    top: 10px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    color: #666;
-    transition: color 0.2s;
+    font-size: 18px;
 }
 
-.icono-ojo:hover {
-    color: #ffffff;
-}
-
-.icono-ojo svg {
-    width: 20px;
-    height: 20px;
-}
-
-/* --- BOTÓN BLANCO PURO --- */
-button {
-    width: 100%;
-    padding: 15px;
-    background-color: #ffffff;
-    color: #000000;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 30px;
-    transition: background-color 0.2s, transform 0.1s;
-}
-
-button:hover {
-    background-color: #e6e6e6;
-}
-
-button:active {
-    transform: scale(0.98);
-}
-
-/* --- MENSAJES --- */
+/* Mensajes */
 .mensaje {
-    margin-top: 25px;
-    font-size: 0.85em;
-    padding: 10px 0;
-    text-align: left;
-    border-radius: 0;
-    border-bottom: 1px solid transparent;
+    margin-top: 20px;
+    font-size: 13px;
+    font-weight: bold;
 }
 
-.exito { 
-    color: #00ff00;
-    border-bottom-color: #00ff00;
-}
-
-.error { 
-    color: #ff3333;
-    border-bottom-color: #ff3333;
+.texto-error {
+    color: #ff4444;
+    font-size: 12px;
 }
 
 a {
     color: #888;
     text-decoration: none;
-    font-size: 0.85em;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    transition: color 0.2s;
 }
 
 a:hover {
-    color: #ffffff;
+    color: white;
     text-decoration: underline;
-}
-
-#enlace-recuperar {
-    text-align: center;
-    margin-top: 20px;
-
 }
