@@ -8,41 +8,41 @@
 </head>
 <body>
     <div class="contenedor">
-        <h2>Iniciar Sesión</h2>
+        <h2>INICIAR SESIÓN</h2>
         
         <form id="form-login">
             <div class="grupo-input">
-                <label>Usuario (Correo):</label>
-                <input type="email" id="login-usuario" name="email" autocomplete="username" required>
+                <label>USUARIO (CORREO):</label>
+                <!-- Atributos para que el gestor de contraseñas sepa qué es esto -->
+                <input type="email" id="login-usuario" name="email" autocomplete="username" placeholder="ejemplo@correo.com" required>
             </div>
 
             <div class="grupo-input">
-                <label>Contraseña:</label>
+                <label>CONTRASEÑA:</label>
                 <div class="input-con-icono">
-                    <input type="password" id="login-pass" name="password" autocomplete="current-password" required>
+                    <input type="password" id="login-pass" name="password" autocomplete="current-password" placeholder="••••••••" required>
                     
-                    <span class="icono-ojo" onclick="mostrarOcultarPass('login-pass')" title="Mostrar/Ocultar">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                            <line x1="1" y1="1" x2="23" y2="23"></line>
-                        </svg>
+                    <!-- Botón del ojo simple -->
+                    <span class="icono-ojo" onclick="verClaveLogin()" title="Mostrar/Ocultar">
+                        👁
                     </span>
                 </div>
             </div>
 
-            <button type="submit">Ingresar</button>
+            <button type="submit">INGRESAR</button>
         </form>
 
         <p id="mensaje-sistema" class="mensaje"></p>
 
-        <div id="enlace-recuperar" style="display: none; margin-top: 15px;">
-            <p style="color: #ff3333; font-size: 0.9em;">Cuenta bloqueada temporalmente.</p>
-            <a href="html/recuperar.html">Recuperar contraseña aquí</a>
+        <!-- Bloque oculto para recuperar cuenta -->
+        <div id="enlace-recuperar" style="display: none;">
+            <p class="texto-error">CUENTA BLOQUEADA TEMPORALMENTE.</p>
+            <a href="html/recuperar.html">RECUPERAR CONTRASEÑA AQUÍ</a>
         </div>
 
         <br>
-        <div style="margin-top: 10px;">
-             <p style="font-size: 0.85em; color: #888;">¿No tienes cuenta? <a href="html/registro.html" style="color: #fff; font-weight: bold;">REGÍSTRATE AQUÍ</a></p>
+        <div style="margin-top: 20px;">
+             <p style="font-size: 0.8em; color: #666;">¿NO TIENES CUENTA? <a href="html/registro.html" style="font-weight: bold; color: white;">REGÍSTRATE AQUÍ</a></p>
         </div>
     </div>
 
