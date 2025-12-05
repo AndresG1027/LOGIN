@@ -23,36 +23,14 @@
 
             <div class="grupo-input">
                 <label>CELULAR:</label>
-                <div class="fila-celular">
-                    
-                    <!-- Selector de país simple hecho con divs -->
-                    <div class="selector-pais-wrapper">
-                        <div class="pais-seleccionado" onclick="abrirLista()">
-                            <div class="info-pais-actual">
-                                <!-- Imagen que cambia con JS -->
-                                <img id="img-bandera" src="https://flagcdn.com/w40/bo.png" class="flag-img" alt="bo">
-                                <span id="texto-codigo">+591</span>
-                            </div>
-                            <span class="flechita">▼</span>
-                        </div>
-
-                        <div class="lista-dropdown" id="lista-paises">
-                            <!-- Aquí se cargan los países con un bucle simple -->
-                            <ul id="lista-items-pais"></ul>
-                        </div>
-                        
-                        <!-- Guardo el código aquí -->
-                        <input type="hidden" id="valor-pais-oculto" value="+591">
-                    </div>
-
-                    <input type="tel" id="reg-celular" name="phone" autocomplete="tel" placeholder="Solo números" required>
-                </div>
+                <input type="tel" id="reg-celular" name="phone" autocomplete="tel" placeholder="7 a 12 dígitos" required>
             </div>
 
             <div class="grupo-input">
                 <label>CONTRASEÑA:</label>
                 <div class="input-con-icono">
                     <input type="password" id="reg-pass" name="new-password" autocomplete="new-password" placeholder="Mayús, Minús, #, Símbolo" required>
+                    
                     <span class="icono-ojo" onclick="verClaveRegistro()" title="Mostrar/Ocultar">
                         👁
                     </span>
@@ -66,7 +44,7 @@
         
         <br>
         <div style="margin-top: 10px;">
-            <p style="font-size: 0.8em; color: #666;">¿YA TIENES CUENTA? <a href="../index.html" style="font-weight: bold; color: white;">INICIA SESIÓN</a></p>
+            <p style="font-size: 0.8em; color: #666;">¿YA TIENES CUENTA? <a href="../index.html" style="font-weight: bold; color: white;">INICIA SESIÓN AQUÍ</a></p>
        </div>
     </div>
 
