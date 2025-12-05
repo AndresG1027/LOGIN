@@ -1,171 +1,175 @@
-/* Estilos Generales - Tema Oscuro Simple */
+/* --- ESTILO STARLINK FINAL (Sin Selector de Países) --- */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
 body {
-    font-family: Arial, sans-serif; /* Fuente básica */
-    background-color: #000000; /* Negro puro */
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    /* Negro absoluto */
+    background-color: #000000;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Altura completa */
+    min-height: 100vh;
     margin: 0;
-    color: white;
+    color: #ffffff;
+}
+
+/* Animación de entrada de la tarjeta principal */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 .contenedor {
-    background-color: #000000;
-    padding: 40px;
-    border: 1px solid #333; /* Borde gris suave */
-    width: 380px;
+    background: #000000;
+    padding: 50px 40px;
+    border: 1px solid #333333; /* Borde sutil característico */
+    border-radius: 0px; /* Bordes rectos */
+    width: 400px;
     text-align: center;
+    position: relative;
+    animation: fadeIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 
 h2 {
+    color: #ffffff;
     margin-top: 0;
-    margin-bottom: 30px;
-    letter-spacing: 2px; /* Separación de letras */
+    margin-bottom: 40px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 2rem;
 }
 
-/* Inputs y Etiquetas */
 .grupo-input {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     text-align: left;
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
-    color: #ccc;
-    font-size: 12px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #cccccc;
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-input {
+/* Inputs técnicos */
+input[type="text"], 
+input[type="email"], 
+input[type="password"], 
+input[type="tel"] {
     width: 100%;
-    padding: 12px;
-    box-sizing: border-box; /* Para que el padding no rompa el ancho */
+    padding: 14px 16px;
+    box-sizing: border-box;
     background-color: #000000;
-    border: 1px solid #444;
-    color: white;
-    font-size: 14px;
+    border: 1px solid #444444;
+    border-radius: 4px;
+    font-size: 16px;
+    color: #ffffff;
+    transition: all 0.2s ease;
 }
 
 input:focus {
-    border-color: white; /* Borde blanco al escribir */
+    border-color: #ffffff;
     outline: none;
+    box-shadow: 0 0 0 1px #ffffff; /* Foco blanco nítido */
 }
 
-/* Botón Blanco */
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: white;
-    color: black;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 20px;
+.grupo-input:focus-within label {
+    color: #ffffff;
 }
 
-button:hover {
-    background-color: #ddd; /* Un poco gris al pasar el mouse */
-}
-
-/* Selector de País */
-.fila-celular {
-    display: flex; /* Pone los elementos lado a lado */
-    gap: 10px;
-    position: relative;
-}
-
-.selector-pais-wrapper {
-    width: 140px;
-    position: relative;
-}
-
-.pais-seleccionado {
-    border: 1px solid #444;
-    height: 42px; /* Altura manual para igualar al input */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.info-pais-actual {
-    display: flex;
-    align-items: center;
-}
-
-.flag-img {
-    width: 20px;
-    height: 14px;
-    margin-right: 8px;
-    border: 1px solid #333;
-}
-
-/* Lista desplegable */
-.lista-dropdown {
-    display: none; /* Oculto por defecto */
-    position: absolute;
-    top: 45px;
-    left: 0;
-    width: 200px;
-    background-color: #000000;
-    border: 1px solid #444;
-    z-index: 10;
-}
-
-ul {
-    list-style: none; /* Quita los puntos de la lista */
-    padding: 0;
-    margin: 0;
-    max-height: 150px;
-    overflow-y: auto; /* Barra de desplazamiento si es muy largo */
-}
-
-.item-pais {
-    padding: 10px;
-    border-bottom: 1px solid #222;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-
-.item-pais:hover {
-    background-color: #222;
-}
-
-/* Ojo de contraseña */
+/* --- OJO --- */
 .input-con-icono {
     position: relative;
+    width: 100%;
+}
+
+.input-con-icono input {
+    padding-right: 45px;
 }
 
 .icono-ojo {
     position: absolute;
-    right: 10px;
-    top: 10px;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
     cursor: pointer;
-    font-size: 18px;
+    display: flex;
+    align-items: center;
+    color: #666;
+    transition: color 0.2s;
+    font-size: 1.2rem;
 }
 
-/* Mensajes */
+.icono-ojo:hover {
+    color: #ffffff;
+}
+
+/* --- BOTÓN BLANCO PURO --- */
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 30px;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #e6e6e6;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* --- MENSAJES --- */
 .mensaje {
-    margin-top: 20px;
-    font-size: 13px;
-    font-weight: bold;
+    margin-top: 25px;
+    font-size: 0.85em;
+    padding: 10px 0;
+    text-align: left;
+    border-radius: 0;
+    border-bottom: 1px solid transparent;
 }
 
-.texto-error {
-    color: #ff4444;
-    font-size: 12px;
+.exito { 
+    color: #00ff00;
+    border-bottom-color: #00ff00;
+}
+
+.error { 
+    color: #ff3333;
+    border-bottom-color: #ff3333;
 }
 
 a {
     color: #888;
     text-decoration: none;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
 }
 
 a:hover {
-    color: white;
+    color: #ffffff;
     text-decoration: underline;
 }
+
+#enlace-recuperar {
+    text-align: center;
+    margin-top: 20px;
+    }
+    
